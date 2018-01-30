@@ -16,127 +16,116 @@ export default class ModalDialog extends Component {
       subheading: null,
       step: 0
     };
-
-    this.toggle = this.toggle.bind(this);
-    this.updateChapter = this.updateChapter.bind(this);
-    this.updateHeading = this.updateHeading.bind(this);
-    this.updateSubheading = this.updateSubheading.bind(this);
-    this.updateChapter = this.updateChapter.bind(this);
-    this.setStep = this.setStep.bind(this);
-    this.cancelForm = this.cancelForm.bind(this);
-    this.submitForm = this.submitForm.bind(this);
-    this.buttonNextStep0Enabled = this.buttonNextStep0Enabled.bind(this);
-    this.buttonNextStep1Enabled = this.buttonNextStep1Enabled.bind(this);    
   }
 
-  toggle() {
+  _toggle = () => {
     this.setState({
       modal: !this.state.modal
     });
   }
 
-  leadingZeros(value, numberOfZeros) {
+  _leadingZeros = (value, numberOfZeros) => {
     let s = value+"";
     while (s.length < numberOfZeros) s = "0" + s;
     return s;
   }
 
-  updateChapter(chapter) {
-    let chapterValue = this.leadingZeros(chapter, 2);
+  _updateChapter = (chapter) => {
+    let chapterValue = this._leadingZeros(chapter, 2);
     this.setState({chapter: chapterValue, heading: null, subheading: null});    
   }
 
-  updateHeading(heading) {
-    let headingValue = this.leadingZeros(heading, 2);
+  _updateHeading = (heading) => {
+    let headingValue = this._leadingZeros(heading, 2);
     this.setState({heading: headingValue, subheading: null});    
   }
 
-  updateSubheading(subheading) {
-    let subheadingValue = this.leadingZeros(subheading, 2);
+  _updateSubheading = (subheading) => {
+    let subheadingValue = this._leadingZeros(subheading, 2);
     this.setState({subheading: subheadingValue});    
   }
 
-  getTitle() {
+  _getTitle = () => {
     let text = '';
     if(this.state.chapter) {
       text += this.state.chapter;
     }
     if(this.state.heading) {
-      text += " - " + this.state.heading;
+      text += "-" + this.state.heading;
     }
     if(this.state.subheading) {
-      text += " - " + this.state.subheading;
+      text += "-" + this.state.subheading;
     }
     return text;
   }
 
-  setStep(step) {
+  _setStep = (step) => {
     this.setState({step});    
   }
 
-  buttonNextStep0Enabled() {
+  _buttonNextStep0Enabled = () => {
     return this.state.chapter === null;
   }
 
-  buttonNextStep1Enabled() {
+  _buttonNextStep1Enabled = () => {
     return this.state.heading === null;
   }
 
-  printStep() {
+  _printStep = () => {
     if (this.state.step === 0) {      
       return (
         <div>          
-          <Button color="primary" onClick={() => this.setStep(1)} disabled={this.buttonNextStep0Enabled()}>Next</Button>
-          <SelectChapter propertyHandler={this.updateChapter}/>
+          <Button color="primary" onClick={() => this._setStep(1)} disabled={this._buttonNextStep0Enabled()}>Next</Button>
+          <SelectChapter propertyHandler={this._updateChapter}/>
         </div>
       )
     }
     if (this.state.step === 1) {      
       return (
         <div>          
-          <Button color="primary" onClick={() => this.setStep(0)}>Back</Button>
-          <Button color="primary" onClick={() => this.setStep(2)} disabled={this.buttonNextStep1Enabled()}>Next</Button>
-          <SelectHeading propertyHandler={this.updateHeading}/>
+          <Button color="primary" onClick={() => this._setStep(0)}>Back</Button>
+          <Button color="primary" onClick={() => this._setStep(2)} disabled={this._buttonNextStep1Enabled()}>Next</Button>
+          <SelectHeading propertyHandler={this._updateHeading}/>
         </div> 
       )
     }
     if (this.state.step === 2) {      
       return (
         <div>          
-          <Button color="primary" onClick={() => this.setStep(1)}>Back</Button>
-          <SelectSubheading propertyHandler={this.updateSubheading}/>
+          <Button color="primary" onClick={() => this._setStep(1)}>Back</Button>
+          <SelectSubheading propertyHandler={this._updateSubheading}/>
         </div> 
       )
     }
   }
 
-  buttonEnabled() {
+  _buttonEnabled = () => {
     return this.state.subheading === null;
   }
 
-  cancelForm() {
+  _cancelForm = () => {
     this.setState({chapter: null, heading: null, subheading: null, step: 0});    
-    this.toggle();
+    this._toggle();
   }
 
-  submitForm() {
-    this.props.onChange(this.props.name, this.getTitle());
+  _submitForm = () => {
+    this.props.onChange(this.props.name, this._getTitle());
     this.setState({chapter: null, heading: null, subheading: null, step: 0});    
-    this.toggle();
+    this._toggle();
   }
 
   render() {    
     return (
        <div>
-        <Button color="danger" onClick={this.toggle}>Label</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className=''>
-          <ModalHeader toggle={this.toggle}>{this.getTitle()}</ModalHeader>
+        <Button color="danger" onClick={this._toggle}>Label</Button>
+        <Modal isOpen={this.state.modal} toggle={this._toggle} className=''>
+          <ModalHeader toggle={this._toggle}>{this._getTitle()}</ModalHeader>
           <ModalBody>
-            {this.printStep()}
+            {this._printStep()}
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.cancelForm}>Cancel</Button>
-            <Button color="primary" onClick={this.submitForm} disabled={this.buttonEnabled()}>Save</Button>            
+            <Button color="secondary" onClick={this._cancelForm}>Cancel</Button>
+            <Button color="primary" onClick={this._submitForm} disabled={this._buttonEnabled()}>Save</Button>            
           </ModalFooter>
         </Modal>
       </div>
