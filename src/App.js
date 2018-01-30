@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import ReduxThunk from 'redux-thunk';
-import reducers from './reducer';
-import MainPage from './MainPage';
 import ReactDOM from 'react-dom';
+import MainPage from './MainPage';
 
 class App extends Component {
-  render() {
-    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
-
+  render() {    
     return (
-      <Provider store={store}>
-        <MainPage />
-      </Provider>
+      <MainPage />
     );
   }
 }

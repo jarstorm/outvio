@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Display from './Display';
+import ModalDialog from './ModalDialog';
 
 export default class MainPage extends Component {
   render() {
     return (
       <div>
-        <Display />
+        <ModalDialog />
       </div>
-    );
+    )
   }
 }
 
