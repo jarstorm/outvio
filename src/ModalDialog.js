@@ -23,6 +23,10 @@ export default class ModalDialog extends Component {
     this.updateSubheading = this.updateSubheading.bind(this);
     this.updateChapter = this.updateChapter.bind(this);
     this.setStep = this.setStep.bind(this);
+    this.cancelForm = this.cancelForm.bind(this);
+    this.submitForm = this.submitForm.bind(this);
+    this.buttonNextStep0Enabled = this.buttonNextStep0Enabled.bind(this);
+    this.buttonNextStep1Enabled = this.buttonNextStep1Enabled.bind(this);    
   }
 
   toggle() {
@@ -70,29 +74,37 @@ export default class ModalDialog extends Component {
     this.setState({step});    
   }
 
+  buttonNextStep0Enabled() {
+    return this.state.chapter === null;
+  }
+
+  buttonNextStep1Enabled() {
+    return this.state.heading === null;
+  }
+
   printStep() {
     if (this.state.step === 0) {      
       return (
-        <div>
+        <div>          
+          <Button color="primary" onClick={() => this.setStep(1)} disabled={this.buttonNextStep0Enabled()}>Next</Button>
           <SelectChapter propertyHandler={this.updateChapter}/>
-          <Button color="primary" onClick={() => this.setStep(1)}>Next</Button>
         </div>
       )
     }
     if (this.state.step === 1) {      
       return (
-        <div>
-          <SelectHeading propertyHandler={this.updateHeading}/>
+        <div>          
           <Button color="primary" onClick={() => this.setStep(0)}>Back</Button>
-          <Button color="primary" onClick={() => this.setStep(2)}>Next</Button>
+          <Button color="primary" onClick={() => this.setStep(2)} disabled={this.buttonNextStep1Enabled()}>Next</Button>
+          <SelectHeading propertyHandler={this.updateHeading}/>
         </div> 
       )
     }
     if (this.state.step === 2) {      
       return (
-        <div>
-          <SelectSubheading propertyHandler={this.updateSubheading}/>
+        <div>          
           <Button color="primary" onClick={() => this.setStep(1)}>Back</Button>
+          <SelectSubheading propertyHandler={this.updateSubheading}/>
         </div> 
       )
     }
@@ -100,6 +112,17 @@ export default class ModalDialog extends Component {
 
   buttonEnabled() {
     return this.state.subheading === null;
+  }
+
+  cancelForm() {
+    this.setState({chapter: null, heading: null, subheading: null, step: 0});    
+    this.toggle();
+  }
+
+  submitForm() {
+    this.props.onChange(this.props.name, this.getTitle());
+    this.setState({chapter: null, heading: null, subheading: null, step: 0});    
+    this.toggle();
   }
 
   render() {    
@@ -112,8 +135,8 @@ export default class ModalDialog extends Component {
             {this.printStep()}
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-            <Button color="primary" onClick={() => this.props.onChange(this.getTitle())} disabled={this.buttonEnabled()}>Save</Button>            
+            <Button color="secondary" onClick={this.cancelForm}>Cancel</Button>
+            <Button color="primary" onClick={this.submitForm} disabled={this.buttonEnabled()}>Save</Button>            
           </ModalFooter>
         </Modal>
       </div>
