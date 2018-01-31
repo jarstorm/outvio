@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalDialog button text 1`] = `
+<div>
+  <button
+    className="openButton btn btn-primary"
+    onClick={[Function]}
+    type="button"
+  >
+    Open dialog
+  </button>
+</div>
+`;

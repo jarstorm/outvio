@@ -4,6 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import SelectChapter from './components/SelectChapter';
 import SelectHeading from './components/SelectHeading';
 import SelectSubheading from './components/SelectSubheading';
+import PropTypes from 'prop-types';
 
 export default class ModalDialog extends Component {
   
@@ -46,7 +47,7 @@ export default class ModalDialog extends Component {
   }
 
   _getTitle = () => {
-    let text = '';
+    let text = 'Selected HS code: ';
     if(this.state.chapter) {
       text += this.state.chapter;
     }
@@ -75,7 +76,7 @@ export default class ModalDialog extends Component {
     if (this.state.step === 0) {      
       return (
         <div>          
-          <Button color="primary" onClick={() => this._setStep(1)} disabled={this._buttonNextStep0Enabled()}>Next</Button>
+          <Button className="float-right" color="primary" onClick={() => this._setStep(1)} disabled={this._buttonNextStep0Enabled()}>Next</Button>
           <SelectChapter propertyHandler={this._updateChapter}/>
         </div>
       )
@@ -83,8 +84,8 @@ export default class ModalDialog extends Component {
     if (this.state.step === 1) {      
       return (
         <div>          
-          <Button color="primary" onClick={() => this._setStep(0)}>Back</Button>
-          <Button color="primary" onClick={() => this._setStep(2)} disabled={this._buttonNextStep1Enabled()}>Next</Button>
+          <Button color="warning" onClick={() => this._setStep(0)}>Back</Button>
+          <Button className="float-right" color="primary" onClick={() => this._setStep(2)} disabled={this._buttonNextStep1Enabled()}>Next</Button>
           <SelectHeading propertyHandler={this._updateHeading}/>
         </div> 
       )
@@ -92,7 +93,7 @@ export default class ModalDialog extends Component {
     if (this.state.step === 2) {      
       return (
         <div>          
-          <Button color="primary" onClick={() => this._setStep(1)}>Back</Button>
+          <Button color="warning" onClick={() => this._setStep(1)}>Back</Button>
           <SelectSubheading propertyHandler={this._updateSubheading}/>
         </div> 
       )
@@ -109,7 +110,8 @@ export default class ModalDialog extends Component {
   }
 
   _submitForm = () => {
-    this.props.onChange(this.props.name, this._getTitle());
+    const value = this.state.chapter + "-" + this.state.heading + "-" + this.state.subheading;
+    this.props.onChange(this.props.name, value);
     this.setState({chapter: null, heading: null, subheading: null, step: 0});    
     this._toggle();
   }
@@ -117,7 +119,7 @@ export default class ModalDialog extends Component {
   render() {    
     return (
        <div>
-        <Button color="danger" onClick={this._toggle}>Label</Button>
+        <Button className="openButton" color="primary" onClick={this._toggle}>Open dialog</Button>
         <Modal isOpen={this.state.modal} toggle={this._toggle} className=''>
           <ModalHeader toggle={this._toggle}>{this._getTitle()}</ModalHeader>
           <ModalBody>
@@ -132,3 +134,9 @@ export default class ModalDialog extends Component {
     );
   }
 }
+
+
+ModalDialog.propTypes = {
+  name: PropTypes.string,
+  onChange: PropTypes.func
+};

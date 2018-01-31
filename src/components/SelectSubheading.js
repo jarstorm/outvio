@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { ListGroup, ListGroupItem } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 export default class SelectSubheading extends Component {
   componentWillMount() {
@@ -37,3 +38,7 @@ export default class SelectSubheading extends Component {
     );
   }
 }
+
+SelectSubheading.propTypes = {  
+  propertyHandler: PropTypes.func
+};

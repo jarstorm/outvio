@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { ListGroup, ListGroupItem } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 export default class SelectHeading extends Component {
   componentWillMount() {
@@ -38,3 +39,6 @@ export default class SelectHeading extends Component {
   }
 }
 
+SelectHeading.propTypes = {  
+  propertyHandler: PropTypes.func
+};

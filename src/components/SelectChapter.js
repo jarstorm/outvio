@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { ListGroup, ListGroupItem } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 export default class SelectChapter extends Component {
   
@@ -39,3 +40,7 @@ export default class SelectChapter extends Component {
   }
   
 }
+
+SelectChapter.propTypes = {  
+  propertyHandler: PropTypes.func
+};
